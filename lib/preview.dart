@@ -21,6 +21,10 @@ double p;
 class _PreviewImageScreenState extends State<PreviewImageScreen> {
   //int index;
   //_PreviewImageScreenState(this.index);
+  List _result;
+  String _confidence="";
+  String _name="";
+  String numbers='';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,6 +143,41 @@ class _PreviewImageScreenState extends State<PreviewImageScreen> {
       ),
     );
   }
+  // Eye classification integration
+  applyModelOnImage()async{
+
+    var res= await Tflite.runModelOnImage(
+      path: widget.imagePath,
+      numResults: 2,
+      threshold: 0.5,
+      imageMean: 127.5,
+
+    );
+
+    setState(() {
+      _result=res;
+      String str=_result[0]["label"];
+      //_name=str.substring(2);
+      //_confidence=_result !=null? _result[0]['confidence']*100.0.toString().substring(0,2)+'%':"";
+
+    });
+
+
+  }
+  loadMyModel() async{
+    var resultant=await Tflite.loadModel(
+      model: "assets/model.tflite",
+      labels: "assets/labels.txt",
+    );
+    print("Result after loading model: $resultant");
+
+  }
+  @override
+  void initState(){
+    super.initState();
+    loadMyModel();
+  }
+  // get the image from path
   getImage()async{
     if(widget.imagePath !=null){
       File cropped=await ImageCropper.cropImage(sourcePath: widget.imagePath,
