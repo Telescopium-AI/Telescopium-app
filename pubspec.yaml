@@ -92,6 +92,8 @@ flutter:
     - assets/Ehb.mp4
     - assets/fill.png
     - assets/jceh_32_107_S1.pdf
+    - assets/model.tflite
+    - assets/labels.txt
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
